@@ -1,0 +1,130 @@
+﻿@model IEnumerable<CityViewModel>
+
+@{ ViewData["Title"] = "City List"; }
+
+<h3>City List</h3>
+
+@Html.DisplayNameFor(model => model.CityName)
+
+<select id="ddlCities" name="ddlCities" onchange="getWeather()">
+    <option value="0">Please select</option>
+    @foreach (var item in Model)
+    {
+<option value="@item.CityName">@item.CityName</option>}
+</select>
+
+<div>
+    <br /><br /><br />
+                <table>
+
+                    <tr>
+                        <td>
+                            <h3>Weather Forecast</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>City/Location : </strong>
+                            <span id="lblCity"></span>&nbsp;&nbsp;
+                            @*<span id="lblCountry"></span>*@
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Time : </strong>
+                            <span id="lblTime"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Wind Speed : </strong>
+                            <span id="lblWind"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Visibility : </strong>
+                            <label id="lblVisibility"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Sky : </strong>
+                            <label id="lblSky"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Temp (C) : </strong>
+                            <label id="lblTempCelcius"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Temp (F) : </strong>
+                            <label id="lblTempFahrenheit"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Dew Point (C) : </strong>
+                            <label id="lblDewPoint"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Relative Humidity : </strong>
+                            <label id="lblHumidity"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Pressure : </strong>
+                            <label id="lblPressure"></label>
+                        </td>
+                    </tr>
+
+                </table>
+</div>
+
+<script>
+
+
+    function getWeather() {
+
+        var cityname = document.getElementById("ddlCities").value;
+        if (cityname.length > 0) {
+            $.ajax({
+                url: "GetWeather?cityName=" + cityname,
+                type: "POST",
+                success: function (result) {
+                    var data = JSON.parse(result);
+                    console.log(data);
+                    $("#lblCity").html(data.City);
+                    $("#lblCountry").text(data.Country);
+                    $("#lblTime").text(data.WeatherDateTime);
+                    $("#lblWind").text(data.Wind);
+                    $("#lblVisibility").text(data.Visibility);
+                    $("#lblSky").text(data.Sky);
+                    $("#lblTempCelcius").text(data.TempInCelcius);
+                    $("#lblTempFahrenheit").text(data.TempInFahrenheit);
+                    $("#lblDewPoint").text(data.DewPoint);
+                    $("#lblHumidity").text(data.Humidity);
+                    $("#lblPressure").text(data.Pressure);
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else {
+            alert("City Not Found");
+        }
+    };
+
+</script>

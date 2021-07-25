@@ -1,0 +1,29 @@
+﻿@model IEnumerable<CountryViewModel>
+
+@{ ViewData["Title"] = "Country List"; }
+
+<h3>Country List</h3>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        <a href="/Weather/List?countryName=@item.CountryName">
+            @Html.DisplayFor(modelItem => item.CountryName)
+        </a>
+    </td>
+    
+</tr>}
+    </tbody>
+</table>
